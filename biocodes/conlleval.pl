@@ -188,10 +188,10 @@ if (not $latex) {
    printf "processed $tokenCounter tokens with $foundCorrect phrases; ";
    printf "found: $foundGuessed phrases; correct: $correctChunk.\n";
    if ($tokenCounter>0) {
-      printf "accuracy: %6.2f%%; ",100*$correctTags/$tokenCounter;
-      printf "precision: %6.2f%%; ",$precision;
-      printf "recall: %6.2f%%; ",$recall;
-      printf "FB1: %6.2f\n",$FB1;
+      printf "accuracy\t%6.2f%%\t",100*$correctTags/$tokenCounter;
+      printf "precision\t%6.2f%%\t",$precision;
+      printf "recall\t%6.2f%%\t",$recall;
+      printf "FB1\t%6.2f%%\n",$FB1;
    }
 }
 
