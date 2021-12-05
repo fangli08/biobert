@@ -63,6 +63,9 @@ flags.DEFINE_bool(
     "do_train", True,
     "Whether to run training."
 )
+
+flags.DEFINE_integer("seed", 9130, "Random seed that will be set at the beginning of training.")
+
 flags.DEFINE_bool("use_tpu", False, "Whether to use TPU or GPU/CPU.")
 
 flags.DEFINE_bool("do_eval", False, "Whether to run eval on the dev set.")
@@ -333,7 +336,7 @@ def file_based_input_fn_builder(input_file, seq_length, is_training, drop_remain
         d = tf.data.TFRecordDataset(input_file)
         if is_training:
             d = d.repeat()
-            d = d.shuffle(buffer_size=100)
+            d = d.shuffle(buffer_size=100, seed=FLAGS.seed)
         d = d.apply(tf.contrib.data.map_and_batch(
             lambda record: _decode_record(record, name_to_features),
             batch_size=batch_size,
@@ -497,7 +500,6 @@ def main(_):
     is_per_host = tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2
 
     run_config = tf.contrib.tpu.RunConfig(
-        keep_checkpoint_max=50,
         cluster=tpu_cluster_resolver,
         master=FLAGS.master,
         model_dir=FLAGS.output_dir,
